@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Shyn Public School, Muzaffarpur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #090d16 0%, #151c2c 50%, #201335 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #38bdf8;
+            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            --danger-color: #f43f5e;
+            --success-color: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            background-attachment: fixed;
+        }
+
+        aside {
+            width: 260px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 25px;
+            height: 100vh;
+            position: fixed;
+            z-index: 100;
+        }
+
+        .admin-logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+        }
+
+        .admin-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .admin-menu button {
+            width: 100%;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            text-align: left;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .admin-menu button:hover, .admin-menu button.active {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .back-site {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: block;
+            padding-top: 15px;
+            border-top: 1px solid var(--glass-border);
+            transition: color 0.3s;
+        }
+
+        .back-site:hover {
+            color: var(--accent-color);
+        }
+
+        main {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 40px;
+            max-width: calc(100vw - 260px);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .admin-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .admin-header h1 span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-profile {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .glass-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--glass-shadow);
+            margin-bottom: 25px;
+        }
+
+        .glass-container h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.88rem;
+        }
+
+        .admin-table th {
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .admin-table td {
+            color: var(--text-secondary);
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+
+        .btn-edit {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-color);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-delete {
+            background: rgba(244, 63, 94, 0.15);
+            color: var(--danger-color);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            outline: none;
+            font-size: 0.88rem;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .submit-btn {
+            padding: 10px 22px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #090d16;
+            cursor: pointer;
+        }
+
+        @media (max-width: 968px) {
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            body {
+                flex-direction: column;
+            }
+            main {
+                margin-left: 0;
+                max-width: 100%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div>
+            <div class="admin-logo">🛡️ SPS Admin Portal</div>
+            <ul class="admin-menu">
+                <li><button class="active" onclick="switchAdminTab('users', event)">👥 Manage Users</button></li>
+                <li><button onclick="switchAdminTab('fees', event)">💰 Fee Structure Control</button></li>
+                <li><button onclick="switchAdminTab('notices', event)">📢 Broadcast Notices</button></li>
+            </ul>
+        </div>
+        <div>
+            <a href="index.html" class="back-site">← Return to Public Website</a>
+        </div>
+    </aside>
+
+    <main>
+        <div class="admin-header">
+            <h1>System Management <span>Console</span></h1>
+            <div class="admin-profile">👤 Administrator (Muzaffarpur Hub)</div>
+        </div>
+
+        <div id="users-panel" class="admin-panel active">
+            <div class="glass-container">
+                <h3>Registered Users (Live from Firebase)</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Role</th>
+                            <th>Email Address</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Loading Firebase users...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="fees-panel" class="admin-panel">
+            <div class="glass-container">
+                <h3>Current Academic Fee Breakdown</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Grade Group</th>
+                            <th>Admission Fee</th>
+                            <th>Tuition Fee (Quarterly)</th>
+                            <th>Activity & Lab Fee</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Primary (Nursery - V)</td>
+                            <td>₹ 5,000</td>
+                            <td>₹ 4,500</td>
+                            <td>₹ 1,200</td>
+                            <td><button class="action-btn btn-edit" onclick="alert('Fee parameters modified.')">Modify</button></td>
+                        </tr>
+                        <tr>
+                            <td>Middle (VI - VIII)</td>
+                            <td>₹ 6,500</td>
+                            <td>₹ 6,000</td>
+                            <td>₹ 1,800</td>
+                            <td><button class="action-btn btn-edit" onclick="alert('Fee parameters modified.')">Modify</button></td>
+                        </tr>
+                        <tr>
+                            <td>Senior Secondary (IX - XII)</td>
+                            <td>₹ 8,000</td>
+                            <td>₹ 8,500</td>
+                            <td>₹ 2,500</td>
+                            <td><button class="action-btn btn-edit" onclick="alert('Fee parameters modified.')">Modify</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="notices-panel" class="admin-panel">
+            <div class="glass-container">
+                <h3>Publish Notice to Public Board</h3>
+                <form onsubmit="event.preventDefault(); alert('Notice broadcasted successfully!'); event.target.reset();">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label>Notice Heading</label>
+                        <input type="text" placeholder="e.g. Annual Sports Meet Schedule" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label>Notice Content</label>
+                        <input type="text" placeholder="Enter short notice description..." required>
+                    </div>
+                    <button type="submit" class="submit-btn">Publish to Website Feed</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyAY9bYNtXvMKcPmVmpa8zGQ0dPYvCXE2_o",
+          authDomain: "wavechat-4b8fa.firebaseapp.com",
+          databaseURL: "https://wavechat-4b8fa-default-rtdb.firebaseio.com",
+          projectId: "wavechat-4b8fa",
+          storageBucket: "wavechat-4b8fa.firebasestorage.app",
+          messagingSenderId: "350559438665",
+          appId: "1:350559438665:web:1c2d068cb5b08a27d63c98",
+          measurementId: "G-26Q3VJGC07"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window.switchAdminTab = function(panelId, event) {
+            document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.admin-menu button').forEach(b => b.classList.remove('active'));
+
+            document.getElementById(panelId + '-panel').classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        async function loadAdminUsers() {
+            try {
+                const snapshot = await get(child(ref(db), `users`));
+                const tbody = document.getElementById('userTableBody');
+                tbody.innerHTML = "";
+
+                if (snapshot.exists()) {
+                    const usersData = snapshot.val();
+                    Object.keys(usersData).forEach(key => {
+                        const user = usersData[key];
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${user.name}</td>
+                            <td>${user.role}</td>
+                            <td>${user.email}</td>
+                            <td><span style="color: var(--success-color);">Active</span></td>
+                            <td>
+                                <button class="action-btn btn-edit" onclick="alert('User record key: ${key}')">View</button>
+                                <button class="action-btn btn-delete" onclick="this.closest('tr').remove()">Remove</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No registered users found in database.</td></tr>`;
+                }
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadAdminUsers);
+    </script>
+</body>
+</html>

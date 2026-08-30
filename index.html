@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shyn Public School | Budhnagra, Bochahan, Muzaffarpur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #090d16 0%, #151c2c 50%, #201335 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #38bdf8;
+            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-attachment: fixed;
+        }
+
+        header {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 94%;
+            max-width: 1300px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--glass-shadow);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 18px;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.82rem;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent-color);
+        }
+
+        .auth-nav-btn {
+            background: var(--accent-gradient);
+            color: #090d16 !important;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .user-profile-badge {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-color) !important;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        section {
+            padding: 120px 5% 80px 5%;
+            max-width: 1300px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .section-title span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+        }
+
+        #home {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.2rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero-content h1 span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .location-tag {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .hero-content p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 26px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 0.9rem;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: #090d16;
+            border: none;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-outline {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(8px);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .glass-card h3 {
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .glass-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .fee-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        .fee-table th, .fee-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.9rem;
+        }
+
+        .fee-table th {
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .fee-table td {
+            color: var(--text-secondary);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(9, 13, 22, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .auth-modal {
+            background: #111827;
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 35px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: rgba(15, 23, 42, 0.5);
+            padding: 4px;
+            border-radius: 10px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .auth-tab.active {
+            background: var(--accent-gradient);
+            color: #090d16;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            outline: none;
+            font-size: 0.88rem;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 11px;
+            border-radius: 8px;
+            background: var(--accent-gradient);
+            border: none;
+            font-weight: 600;
+            color: #090d16;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 968px) {
+            #home {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding-top: 140px;
+            }
+            .hero-content h1 {
+                font-size: 2.3rem;
+            }
+            .btn-group {
+                justify-content: center;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            nav ul {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(16px);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                border-bottom: 1px solid var(--glass-border);
+                border-radius: 0 0 16px 16px;
+                display: none;
+            }
+            nav ul.show {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">🏫 Shyn Public School</div>
+        <div class="menu-toggle" id="mobile-menu">☰</div>
+        <nav>
+            <ul id="nav-list">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#academics">Academics</a></li>
+                <li><a href="#faculty">Faculty</a></li>
+                <li><a href="#admissions">Admissions</a></li>
+                <li><a href="#fees">Fees</a></li>
+                <li><a href="#results">Results</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="admin.html" style="color: var(--accent-color);">Admin Panel</a></li>
+                <li id="authNavItem"><a href="#" class="auth-nav-btn" onclick="openModal('login')">Login / Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <div class="hero-content">
+            <span class="location-tag">📍 Budhnagra, Adigopalpur, Bochahan, Muzaffarpur</span>
+            <h1>Excellence in Education & <span>Character Building</span></h1>
+            <p>Welcome to Shyn Public School. Fostering a robust academic framework, innovative skill sets, and moral integrity for every student.</p>
+            <div class="btn-group">
+                <a href="#admissions" class="btn btn-primary">Apply For Admission</a>
+                <a href="#about" class="btn btn-outline">Discover Campus</a>
+            </div>
+        </div>
+        <div class="glass-card">
+            <h3>Quick Notice Board</h3>
+            <p style="margin-bottom: 15px;">📢 Admissions for the new academic session are now officially open across all primary and secondary grade levels.</p>
+            <p>🕒 Office Hours: Mon - Sat: 8:00 AM - 2:00 PM</p>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title">About <span>Shyn Public School</span></h2>
+        <p class="section-subtitle">Rooted in Muzaffarpur, growing globally with values.</p>
+        <div class="grid-3">
+            <div class="glass-card">
+                <h3>Our Vision</h3>
+                <p>To cultivate intellectual curiosity, analytical thinking, and ethical responsibility in a dynamic digital world.</p>
+            </div>
+            <div class="glass-card">
+                <h3>Our Mission</h3>
+                <p>Providing state-of-the-art interactive learning environments paired with individualized student mentorship.</p>
+            </div>
+            <div class="glass-card">
+                <h3>Campus Heritage</h3>
+                <p>Located peacefully in Budhnagra, Adigopalpur, Bochahan — offering lush green sports fields and smart tech-enabled classrooms.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="academics">
+        <h2 class="section-title">Academic <span>Programs</span></h2>
+        <p class="section-subtitle">Comprehensive curriculums customized for developmental milestones.</p>
+        <div class="grid-3">
+            <div class="glass-card">
+                <h3>Primary Wing (Nursery - Class V)</h3>
+                <p>Emphasis on foundational literacy, experiential play-way methods, and basic computational skills.</p>
+            </div>
+            <div class="glass-card">
+                <h3>Middle School (Class VI - VIII)</h3>
+                <p>Introduction to specialized sciences, cooperative project learning, and advanced mathematical reasoning.</p>
+            </div>
+            <div class="glass-card">
+                <h3>Senior Secondary (Class IX - XII)</h3>
+                <p>Rigorous board preparation streams spanning Science, Commerce, and Arts with expert faculty coaching.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="faculty">
+        <h2 class="section-title">Our Dedicated <span>Faculty</span></h2>
+        <p class="section-subtitle">Experienced educators committed to nurturing student potential.</p>
+        <div class="grid-3">
+            <div class="glass-card">
+                <h3>Leadership Team</h3>
+                <p>Guided by seasoned administrators with decades of combined pedagogical experience in premier educational boards.</p>
+            </div>
+            <div class="glass-card">
+                <h3>Department Heads</h3>
+                <p>Specialized subject matter leaders driving interactive curriculum execution across sciences and humanities.</p>
+            </div>
+            <div class="glass-card">
+                <h3>Student Mentors</h3>
+                <p>Dedicated counselors providing individual academic tracking, emotional well-being support, and career guidance.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="admissions">
+        <h2 class="section-title">Admissions <span>Roadmap</span></h2>
+        <p class="section-subtitle">Join the Shyn Public School community in Muzaffarpur.</p>
+        <div class="grid-3">
+            <div class="glass-card">
+                <h3>1. Inquiry & Campus Tour</h3>
+                <p>Visit our campus at Budhnagra, Adigopalpur, Bochahan or fill out our online interest inquiry form.</p>
+            </div>
+            <div class="glass-card">
+                <h3>2. Application Submission</h3>
+                <p>Submit previous academic reports along with completed enrollment forms through our digital portal.</p>
+            </div>
+            <div class="glass-card">
+                <h3>3. Assessment & Enrollment</h3>
+                <p>Complete student interaction / evaluation process and finalize fee formalities to confirm admission.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="fees">
+        <h2 class="section-title">Transparent <span>Fee Structure</span></h2>
+        <p class="section-subtitle">Affordable, high-value education structures categorized by grade.</p>
+        <table class="fee-table">
+            <thead>
+                <tr>
+                    <th>Grade Group</th>
+                    <th>Admission Fee (One-Time)</th>
+                    <th>Tuition Fee (Quarterly)</th>
+                    <th>Activity & Lab Fee</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Primary (Nursery - V)</td>
+                    <td>₹ 5,000</td>
+                    <td>₹ 4,500</td>
+                    <td>₹ 1,200</td>
+                </tr>
+                <tr>
+                    <td>Middle (VI - VIII)</td>
+                    <td>₹ 6,500</td>
+                    <td>₹ 6,000</td>
+                    <td>₹ 1,800</td>
+                </tr>
+                <tr>
+                    <td>Senior Secondary (IX - XII)</td>
+                    <td>₹ 8,000</td>
+                    <td>₹ 8,500</td>
+                    <td>₹ 2,500</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="results">
+        <h2 class="section-title">Academic <span>Milestones & Results</span></h2>
+        <p class="section-subtitle">Consistently achieving district-leading scores and distinction rates.</p>
+        <div class="grid-3">
+            <div class="glass-card">
+                <h3>100% Pass Record</h3>
+                <p>Maintaining a flawless board exam success streak with over 45% students securing distinctions.</p>
+            </div>
+            <div class="glass-card">
+                <h3>District Toppers</h3>
+                <p>Regularly producing top-ranking scholars in Muzaffarpur across regional science and literary olympiads.</p>
+            </div>
+            <div class="glass-card">
+                <h3>Higher Education Placement</h3>
+                <p>Alumni successfully placed in premier engineering, medical, and liberal arts institutions nationwide.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title">Contact <span>Us</span></h2>
+        <p class="section-subtitle">Get in touch with our administrative office.</p>
+        <div class="grid-3">
+            <div class="glass-card">
+                <h3>Location Address</h3>
+                <p>Shyn Public School<br>Budhnagra, Adigopalpur, Bochahan<br>Muzaffarpur, Bihar - 843103</p>
+            </div>
+            <div class="glass-card">
+                <h3>Direct Helpline</h3>
+                <p>Phone: +91 90000 00000<br>Email: contact@shynpublicschool.edu<br>Support: support@shynpublicschool.edu</p>
+            </div>
+            <div class="glass-card">
+                <h3>Office Timing</h3>
+                <p>Monday to Saturday<br>8:00 AM – 2:00 PM<br>Sunday: Closed</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="authModal">
+        <div class="auth-modal">
+            <button class="close-modal" onclick="closeModal()">✕</button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('login', event)">Login</button>
+                <button class="auth-tab" onclick="switchAuthTab('signup', event)">Sign Up</button>
+            </div>
+
+            <div id="loginForm" class="auth-form active">
+                <form onsubmit="handleAuthSubmit(event, 'Login')">
+                    <div class="form-group">
+                        <label>User Role</label>
+                        <select id="loginRole">
+                            <option>Student</option>
+                            <option>Teacher / Staff</option>
+                            <option>Parent / Guardian</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Email or Registration ID</label>
+                        <input type="text" id="loginIdentifier" placeholder="Enter ID or email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Access Portal</button>
+                </form>
+            </div>
+
+            <div id="signupForm" class="auth-form">
+                <form onsubmit="handleAuthSubmit(event, 'Sign Up')">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="signupName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Register As</label>
+                        <select id="signupRole">
+                            <option>New Student Applicant</option>
+                            <option>Parent Account</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="signupEmail" placeholder="name@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Create Password</label>
+                        <input type="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyAY9bYNtXvMKcPmVmpa8zGQ0dPYvCXE2_o",
+          authDomain: "wavechat-4b8fa.firebaseapp.com",
+          databaseURL: "https://wavechat-4b8fa-default-rtdb.firebaseio.com",
+          projectId: "wavechat-4b8fa",
+          storageBucket: "wavechat-4b8fa.firebasestorage.app",
+          messagingSenderId: "350559438665",
+          appId: "1:350559438665:web:1c2d068cb5b08a27d63c98",
+          measurementId: "G-26Q3VJGC07"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        document.getElementById('mobile-menu').addEventListener('click', () => {
+            document.getElementById('nav-list').classList.toggle('show');
+        });
+
+        window.openModal = function(mode) {
+            document.getElementById('authModal').classList.add('active');
+            if(mode === 'login') switchAuthTab('login', null);
+        }
+
+        window.closeModal = function() {
+            document.getElementById('authModal').classList.remove('active');
+        }
+
+        window.switchAuthTab = function(type, event) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const tabs = document.querySelectorAll('.auth-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+
+            if (type === 'login') {
+                loginForm.classList.add('active');
+                signupForm.classList.remove('active');
+                if(event) event.currentTarget.classList.add('active');
+                else tabs[0].classList.add('active');
+            } else {
+                signupForm.classList.add('active');
+                loginForm.classList.remove('active');
+                if(event) event.currentTarget.classList.add('active');
+                else tabs[1].classList.add('active');
+            }
+        }
+
+        window.handleAuthSubmit = async function(event, actionType) {
+            event.preventDefault();
+            let userName = "";
+            let email = "";
+            let role = "";
+
+            if (actionType === 'Sign Up') {
+                userName = document.getElementById('signupName').value;
+                email = document.getElementById('signupEmail').value;
+                role = document.getElementById('signupRole').value;
+            } else {
+                email = document.getElementById('loginIdentifier').value;
+                userName = email.includes('@') ? email.split('@')[0] : email;
+                role = document.getElementById('loginRole').value;
+            }
+
+            userName = userName.charAt(0).toUpperCase() + userName.slice(1);
+            const safeKey = email.replace(/[@.]/g, "_");
+
+            try {
+                await set(ref(db, 'users/' + safeKey), {
+                    name: userName,
+                    email: email,
+                    role: role,
+                    lastLogin: new Date().toISOString()
+                });
+
+                const authNavItem = document.getElementById('authNavItem');
+                authNavItem.innerHTML = `<div class="user-profile-badge" onclick="handleLogout()" title="Click to Logout">👤 ${userName} ⏷</div>`;
+
+                alert(`Welcome to Shyn Public School, ${userName}! Authenticated successfully.`);
+                closeModal();
+            } catch (error) {
+                console.error("Firebase Error:", error);
+                alert("Database authentication failed.");
+            }
+        }
+
+        window.handleLogout = function() {
+            if(confirm("Do you want to log out of Shyn Public School portal?")) {
+                const authNavItem = document.getElementById('authNavItem');
+                authNavItem.innerHTML = `<a href="#" class="auth-nav-btn" onclick="openModal('login')">Login / Sign Up</a>`;
+            }
+        }
+    </script>
+</body>
+</html>
