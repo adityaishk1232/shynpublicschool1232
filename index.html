@@ -3,764 +3,508 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shyn Public School | Budhnagra, Bochahan, Muzaffarpur</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Shyn Public School | Official Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #090d16 0%, #151c2c 50%, #201335 100%);
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent-color: #38bdf8;
-            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            --bg-main: #ffffff;
+            --primary-yellow: #f2b827;
+            --primary-hover: #e0a71b;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --card-border: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: var(--bg-gradient);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-attachment: fixed;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        body { background: var(--bg-main); color: var(--text-dark); min-height: 100vh; }
 
         header {
-            position: fixed;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 94%;
-            max-width: 1300px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 12px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--glass-shadow);
-            z-index: 1000;
+            position: sticky; top: 0; background: #fff; z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-bottom: 1px solid var(--card-border);
         }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.1rem;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 16px 20px;
+            display: flex; justify-content: space-between; align-items: center;
         }
+        .logo-text { font-weight: 800; font-size: 1.25rem; color: var(--text-dark); }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 18px;
-            align-items: center;
-        }
+        nav ul { display: flex; list-style: none; gap: 20px; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-size: 0.88rem; font-weight: 600; transition: 0.2s; }
+        nav a:hover { color: var(--primary-yellow); }
 
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.82rem;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover, nav a.active {
-            color: var(--accent-color);
-        }
-
-        .auth-nav-btn {
-            background: var(--accent-gradient);
-            color: #090d16 !important;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .user-profile-badge {
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--accent-color) !important;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-        }
-
-        .menu-toggle {
-            display: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--text-primary);
-        }
-
-        section {
-            padding: 120px 5% 80px 5%;
-            max-width: 1300px;
-            margin: 0 auto;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .section-title {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .section-title span {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .section-subtitle {
-            color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 0.95rem;
-        }
-
-        #home {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .hero-content h1 {
-            font-size: 3.2rem;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .hero-content h1 span {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .location-tag {
-            display: inline-block;
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent-color);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-bottom: 15px;
-            border: 1px solid rgba(56, 189, 248, 0.2);
-        }
-
-        .hero-content p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 12px 26px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            font-size: 0.9rem;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .btn-primary {
-            background: var(--accent-gradient);
-            color: #090d16;
-            border: none;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        .btn-yellow {
+            background: var(--primary-yellow); color: #fff; border: none;
+            padding: 9px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; font-size: 0.88rem; transition: 0.2s; text-decoration: none; display: inline-block;
         }
 
         .btn-outline {
-            background: var(--glass-bg);
-            color: var(--text-primary);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(8px);
+            background: transparent; color: var(--text-dark); border: 2px solid var(--primary-yellow);
+            padding: 8px 18px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; font-size: 0.88rem; transition: 0.2s; text-decoration: none; display: inline-block;
         }
+        .btn-outline:hover { background: var(--primary-yellow); color: #fff; }
 
-        .btn:hover {
-            transform: translateY(-2px);
+        .hero {
+            max-width: 1200px; margin: 30px auto; padding: 0 20px;
+            display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center;
         }
+        .hero-title { font-size: 3rem; font-weight: 800; line-height: 1.15; margin-bottom: 16px; }
+        .hero-title span { color: var(--primary-yellow); }
+        .hero-desc { color: var(--text-muted); font-size: 0.98rem; line-height: 1.6; margin-bottom: 24px; }
+        .hero-img { width: 100%; height: 350px; object-fit: cover; border-radius: 24px; box-shadow: 0 15px 30px rgba(0,0,0,0.08); background: #f1f5f9; }
 
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
+        .stats-banner { background: #f8fafc; border-y: 1px solid var(--card-border); padding: 30px 20px; margin: 40px 0; }
+        .stats-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 20px; }
+        .stat-num { font-size: 2.2rem; font-weight: 800; color: var(--primary-yellow); }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-top: 4px; }
 
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: var(--glass-shadow);
-            transition: transform 0.3s;
-        }
+        .section-container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+        .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
+        .section-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+        .card { background: #fff; border: 1px solid var(--card-border); border-radius: 20px; padding: 28px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
 
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(56, 189, 248, 0.3);
-        }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
-        .glass-card h3 {
-            margin-bottom: 12px;
-            font-size: 1.25rem;
-            color: var(--text-primary);
-        }
+        .principal-card { display: flex; gap: 24px; align-items: center; }
+        .principal-img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-yellow); background: #f1f5f9; }
 
-        .glass-card p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
+        .notice-list { list-style: none; }
+        .notice-item { padding: 12px 0; border-bottom: 1px dashed var(--card-border); display: flex; justify-content: space-between; align-items: center; }
+        .notice-badge { background: #fef3c7; color: #92400e; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 12px; }
 
-        .fee-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-        }
+        .table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .table th, .table td { padding: 14px; text-align: left; border-bottom: 1px solid var(--card-border); font-size: 0.9rem; }
+        .table th { background: #f8fafc; font-weight: 700; }
 
-        .fee-table th, .fee-table td {
-            padding: 15px 20px;
-            text-align: left;
-            border-bottom: 1px solid var(--glass-border);
-            font-size: 0.9rem;
-        }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+        .gallery-img { width: 100%; height: 180px; object-fit: cover; border-radius: 14px; background: #f1f5f9; }
 
-        .fee-table th {
-            background: rgba(15, 23, 42, 0.6);
-            color: var(--accent-color);
-            font-weight: 600;
+        /* USER AUTH MODAL STYLES */
+        #userAuthModal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.75); z-index: 10000; justify-content: center; align-items: center; padding: 20px;
         }
+        .user-auth-card {
+            background: #ffffff; width: 100%; max-width: 420px; padding: 32px;
+            border-radius: 20px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); position: relative;
+        }
+        .user-auth-toggle { display: flex; gap: 10px; margin-bottom: 20px; background: #f1f5f9; padding: 4px; border-radius: 10px; }
+        .user-auth-toggle button {
+            flex: 1; padding: 8px; border: none; border-radius: 8px; font-weight: 700;
+            cursor: pointer; background: transparent; color: #64748b; font-size: 0.85rem;
+        }
+        .user-auth-toggle button.active { background: #ffffff; color: var(--text-dark); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        
+        .form-group-modal { margin-bottom: 12px; }
+        .form-group-modal label { display: block; font-size: 0.8rem; color: #64748b; margin-bottom: 4px; font-weight: 600; }
+        .form-group-modal input, .form-group-modal select { width: 100%; padding: 10px; border: 1px solid var(--card-border); border-radius: 8px; outline: none; font-size: 0.9rem; }
 
-        .fee-table td {
-            color: var(--text-secondary);
+        /* SOCIAL LOGIN BUTTONS */
+        .social-divider {
+            display: flex; align-items: center; text-align: center; margin: 16px 0; color: #94a3b8; font-size: 0.78rem; font-weight: 600;
         }
+        .social-divider::before, .social-divider::after {
+            content: ''; flex: 1; border-bottom: 1px solid var(--card-border);
+        }
+        .social-divider span { padding: 0 10px; }
 
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(9, 13, 22, 0.8);
-            backdrop-filter: blur(8px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
+        .btn-social {
+            width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border);
+            background: #fff; color: var(--text-dark); font-weight: 600; font-size: 0.85rem;
+            display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
+            margin-bottom: 8px; transition: 0.2s;
         }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .auth-modal {
-            background: #111827;
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 35px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-
-        .auth-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            background: rgba(15, 23, 42, 0.5);
-            padding: 4px;
-            border-radius: 10px;
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.85rem;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .auth-tab.active {
-            background: var(--accent-gradient);
-            color: #090d16;
-        }
-
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 5px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px 14px;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            outline: none;
-            font-size: 0.88rem;
-        }
-
-        .form-group input:focus {
-            border-color: var(--accent-color);
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 11px;
-            border-radius: 8px;
-            background: var(--accent-gradient);
-            border: none;
-            font-weight: 600;
-            color: #090d16;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        @media (max-width: 968px) {
-            #home {
-                grid-template-columns: 1fr;
-                text-align: center;
-                padding-top: 140px;
-            }
-            .hero-content h1 {
-                font-size: 2.3rem;
-            }
-            .btn-group {
-                justify-content: center;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            nav ul {
-                position: absolute;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background: rgba(15, 23, 42, 0.98);
-                backdrop-filter: blur(16px);
-                flex-direction: column;
-                align-items: center;
-                padding: 20px 0;
-                border-bottom: 1px solid var(--glass-border);
-                border-radius: 0 0 16px 16px;
-                display: none;
-            }
-            nav ul.show {
-                display: flex;
-            }
-        }
+        .btn-social:hover { background: #f8fafc; border-color: #cbd5e1; }
+        .btn-social img { width: 18px; height: 18px; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">🏫 Shyn Public School</div>
-        <div class="menu-toggle" id="mobile-menu">☰</div>
-        <nav>
-            <ul id="nav-list">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#academics">Academics</a></li>
-                <li><a href="#faculty">Faculty</a></li>
-                <li><a href="#admissions">Admissions</a></li>
-                <li><a href="#fees">Fees</a></li>
-                <li><a href="#results">Results</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li id="authNavItem"><a href="#" class="auth-nav-btn" onclick="openModal('login')">Login / Sign Up</a></li>
-            </ul>
-        </nav>
+        <div class="nav-container">
+            <span class="logo-text">🏫 Shyn Public School</span>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#academics">Academics</a></li>
+                    <li><a href="#admissions">Admissions</a></li>
+                    <li><a href="#noticeboard">Notices</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><button onclick="openUserAuthModal()" class="btn-outline">🔑 Student / Parent Login</button></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <section id="home">
-        <div class="hero-content">
-            <span class="location-tag">📍 Budhnagra, Adigopalpur, Bochahan, Muzaffarpur</span>
-            <h1>Excellence in Education & <span>Character Building</span></h1>
-            <p>Welcome to Shyn Public School. Fostering a robust academic framework, innovative skill sets, and moral integrity for every student.</p>
-            <div class="btn-group">
-                <a href="#admissions" class="btn btn-primary">Apply For Admission</a>
-                <a href="#about" class="btn btn-outline">Discover Campus</a>
-            </div>
+    <section class="hero" id="home">
+        <div>
+            <h1 class="hero-title" id="dynHeroTitle">Nurturing Minds, <span>Building Futures</span></h1>
+            <p class="hero-desc" id="dynHeroDesc">Empowering students with quality education, innovative curriculum, and holistic growth at Budhnagra, Muzaffarpur.</p>
+            <a href="#admissions" class="btn-yellow">Apply for Admission</a>
         </div>
-        <div class="glass-card">
-            <h3>Quick Notice Board</h3>
-            <p style="margin-bottom: 15px;">📢 Admissions for the new academic session are now officially open across all primary and secondary grade levels.</p>
-            <p>🕒 Office Hours: Mon - Sat: 8:00 AM - 2:00 PM</p>
+        <div>
+            <img id="dynHeroImg" class="hero-img" alt="School Hero Banner">
         </div>
     </section>
 
-    <section id="about">
-        <h2 class="section-title">About <span>Shyn Public School</span></h2>
-        <p class="section-subtitle">Rooted in Muzaffarpur, growing globally with values.</p>
-        <div class="grid-3">
-            <div class="glass-card">
-                <h3>Our Vision</h3>
-                <p>To cultivate intellectual curiosity, analytical thinking, and ethical responsibility in a dynamic digital world.</p>
-            </div>
-            <div class="glass-card">
-                <h3>Our Mission</h3>
-                <p>Providing state-of-the-art interactive learning environments paired with individualized student mentorship.</p>
-            </div>
-            <div class="glass-card">
-                <h3>Campus Heritage</h3>
-                <p>Located peacefully in Budhnagra, Adigopalpur, Bochahan — offering lush green sports fields and smart tech-enabled classrooms.</p>
-            </div>
+    <div class="stats-banner">
+        <div class="stats-grid">
+            <div><div class="stat-num" id="statStudents">1200+</div><div class="stat-label">Active Students</div></div>
+            <div><div class="stat-num" id="statFaculty">55+</div><div class="stat-label">Expert Faculty</div></div>
+            <div><div class="stat-num" id="statPass">99.8%</div><div class="stat-label">Board Pass Rate</div></div>
+            <div><div class="stat-num" id="statRatio">15:1</div><div class="stat-label">Student-Teacher Ratio</div></div>
         </div>
-    </section>
+    </div>
 
-    <section id="academics">
-        <h2 class="section-title">Academic <span>Programs</span></h2>
-        <p class="section-subtitle">Comprehensive curriculums customized for developmental milestones.</p>
-        <div class="grid-3">
-            <div class="glass-card">
-                <h3>Primary Wing (Nursery - Class V)</h3>
-                <p>Emphasis on foundational literacy, experiential play-way methods, and basic computational skills.</p>
+    <div class="section-container" id="about">
+        <div class="grid-2">
+            <div class="card">
+                <h2 class="section-title">About Our School</h2>
+                <p id="dynSchoolHistory" style="color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">Established with a commitment to excellence, Shyn Public School provides a safe, vibrant, and innovative learning ecosystem.</p>
+                <h4 style="margin-bottom: 6px;">Vision & Mission</h4>
+                <p id="dynVisionMission" style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5;">To cultivate global leaders equipped with ethical values, academic rigor, and creative problem-solving capabilities.</p>
             </div>
-            <div class="glass-card">
-                <h3>Middle School (Class VI - VIII)</h3>
-                <p>Introduction to specialized sciences, cooperative project learning, and advanced mathematical reasoning.</p>
-            </div>
-            <div class="glass-card">
-                <h3>Senior Secondary (Class IX - XII)</h3>
-                <p>Rigorous board preparation streams spanning Science, Commerce, and Arts with expert faculty coaching.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="faculty">
-        <h2 class="section-title">Our Dedicated <span>Faculty</span></h2>
-        <p class="section-subtitle">Experienced educators committed to nurturing student potential.</p>
-        <div class="grid-3">
-            <div class="glass-card">
-                <h3>Leadership Team</h3>
-                <p>Guided by seasoned administrators with decades of combined pedagogical experience in premier educational boards.</p>
-            </div>
-            <div class="glass-card">
-                <h3>Department Heads</h3>
-                <p>Specialized subject matter leaders driving interactive curriculum execution across sciences and humanities.</p>
-            </div>
-            <div class="glass-card">
-                <h3>Student Mentors</h3>
-                <p>Dedicated counselors providing individual academic tracking, emotional well-being support, and career guidance.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="admissions">
-        <h2 class="section-title">Admissions <span>Roadmap</span></h2>
-        <p class="section-subtitle">Join the Shyn Public School community in Muzaffarpur.</p>
-        <div class="grid-3">
-            <div class="glass-card">
-                <h3>1. Inquiry & Campus Tour</h3>
-                <p>Visit our campus at Budhnagra, Adigopalpur, Bochahan or fill out our online interest inquiry form.</p>
-            </div>
-            <div class="glass-card">
-                <h3>2. Application Submission</h3>
-                <p>Submit previous academic reports along with completed enrollment forms through our digital portal.</p>
-            </div>
-            <div class="glass-card">
-                <h3>3. Assessment & Enrollment</h3>
-                <p>Complete student interaction / evaluation process and finalize fee formalities to confirm admission.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="fees">
-        <h2 class="section-title">Transparent <span>Fee Structure</span></h2>
-        <p class="section-subtitle">Affordable, high-value education structures categorized by grade.</p>
-        <table class="fee-table">
-            <thead>
-                <tr>
-                    <th>Grade Group</th>
-                    <th>Admission Fee (One-Time)</th>
-                    <th>Tuition Fee (Quarterly)</th>
-                    <th>Activity & Lab Fee</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Primary (Nursery - V)</td>
-                    <td>₹ 5,000</td>
-                    <td>₹ 1,500</td>
-                    <td>₹ 200</td>
-                </tr>
-                <tr>
-                    <td>Middle (VI - VIII)</td>
-                    <td>₹ 6,500</td>
-                    <td>₹ 2,000</td>
-                    <td>₹ 200</td>
-                </tr>
-                <tr>
-                    <td>Senior Secondary (IX - XII)</td>
-                    <td>₹ 8,000</td>
-                    <td>₹ 2500</td>
-                    <td>₹ 200</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <section id="results">
-        <h2 class="section-title">Academic <span>Milestones & Results</span></h2>
-        <p class="section-subtitle">Consistently achieving district-leading scores and distinction rates.</p>
-        <div class="grid-3">
-            <div class="glass-card">
-                <h3>100% Pass Record</h3>
-                <p>Maintaining a flawless board exam success streak with over 45% students securing distinctions.</p>
-            </div>
-            <div class="glass-card">
-                <h3>District Toppers</h3>
-                <p>Regularly producing top-ranking scholars in Muzaffarpur across regional science and literary olympiads.</p>
-            </div>
-            <div class="glass-card">
-                <h3>Higher Education Placement</h3>
-                <p>Alumni successfully placed in premier engineering, medical, and liberal arts institutions nationwide.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <h2 class="section-title">Contact <span>Us</span></h2>
-        <p class="section-subtitle">Get in touch with our administrative office.</p>
-        <div class="grid-3">
-            <div class="glass-card">
-                <h3>Location Address</h3>
-                <p>Shyn Public School<br>Budhnagra, Adigopalpur, Bochahan<br>Muzaffarpur, Bihar - 843103</p>
-            </div>
-            <div class="glass-card">
-                <h3>Direct Helpline</h3>
-                <p>Phone: +91 90000 00000<br>Email: contact@shynpublicschool.edu<br>Support: support@shynpublicschool.edu</p>
-            </div>
-            <div class="glass-card">
-                <h3>Office Timing</h3>
-                <p>Monday to Saturday<br>8:00 AM – 2:00 PM<br>Sunday: Closed</p>
-            </div>
-        </div>
-    </section>
-
-    <div class="modal-overlay" id="authModal">
-        <div class="auth-modal">
-            <button class="close-modal" onclick="closeModal()">✕</button>
-            <div class="auth-tabs">
-                <button class="auth-tab active" onclick="switchAuthTab('login', event)">Login</button>
-                <button class="auth-tab" onclick="switchAuthTab('signup', event)">Sign Up</button>
-            </div>
-
-            <div id="loginForm" class="auth-form active">
-                <form onsubmit="handleAuthSubmit(event, 'Login')">
-                    <div class="form-group">
-                        <label>User Role</label>
-                        <select id="loginRole">
-                            <option>Student</option>
-                            <option>Teacher / Staff</option>
-                            <option>Parent / Guardian</option>
-                        </select>
+            <div class="card">
+                <h2 class="section-title">Principal's Message</h2>
+                <div class="principal-card">
+                    <img id="dynPrincipalImg" class="principal-img" alt="Principal Photo">
+                    <div>
+                        <h4 id="dynPrincipalName">Dr. A. K. Sharma</h4>
+                        <p style="font-size: 0.8rem; color: var(--primary-yellow); font-weight: 700; margin-bottom: 8px;">Principal & Academic Director</p>
+                        <p id="dynPrincipalMsg" style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">"Education is not merely acquiring knowledge, but awakening character, discipline, and purpose in young minds."</p>
                     </div>
-                    <div class="form-group">
-                        <label>Email or Registration ID</label>
-                        <input type="text" id="loginIdentifier" placeholder="Enter ID or email" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" placeholder="••••••••" required>
-                    </div>
-                    <button type="submit" class="submit-btn">Access Portal</button>
-                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-container" id="noticeboard">
+        <div class="grid-2">
+            <div class="card">
+                <h3 class="section-title">📢 Notice Board & Circulars</h3>
+                <ul class="notice-list" id="noticeListContainer"></ul>
+            </div>
+            <div class="card">
+                <h3 class="section-title">🗓️ Upcoming Events</h3>
+                <ul class="notice-list" id="eventListContainer"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-container" id="academics">
+        <div class="card">
+            <h2 class="section-title">Academic Structure & Fee Schedule</h2>
+            <table class="table">
+                <thead>
+                    <tr><th>Class / Grade</th><th>Fee Category</th><th>Billing Cycle</th><th>Amount (₹)</th></tr>
+                </thead>
+                <tbody id="publicFeeTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section-container" id="gallery">
+        <div class="card">
+            <h2 class="section-title">Campus Gallery</h2>
+            <div class="gallery-grid" id="galleryContainer"></div>
+        </div>
+    </div>
+
+    <div class="section-container" id="contact">
+        <div class="card">
+            <h2 class="section-title">Contact Us & Campus Location</h2>
+            <div class="grid-2" style="margin-top: 20px;">
+                <div>
+                    <h4 id="locAddressTitle">Budhnagra Main Campus</h4>
+                    <p id="locAddressText" style="color: var(--text-muted); margin: 10px 0;">Budhnagra, Bochahan, Muzaffarpur, Bihar 843103</p>
+                    <p><strong>📞 Phone:</strong> <span id="locPhone">+91 98765 43210</span></p>
+                    <p><strong>✉️ Email:</strong> <span id="locEmail">info@shynpublicschool.com</span></p>
+                </div>
+                <div>
+                    <iframe id="locMapFrame" style="width: 100%; height: 200px; border: none; border-radius: 14px;" src="https://maps.google.com/maps?q=Muzaffarpur&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- USER LOGIN & SIGNUP MODAL WITH GOOGLE & GITHUB -->
+    <div id="userAuthModal">
+        <div class="user-auth-card">
+            <button onclick="closeUserAuthModal()" style="position: absolute; top: 16px; right: 16px; border: none; background: transparent; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
+
+            <div class="user-auth-toggle">
+                <button id="userTabLoginBtn" class="active" onclick="switchUserAuthTab('login')">User Login</button>
+                <button id="userTabSignupBtn" onclick="switchUserAuthTab('signup')">Sign Up</button>
             </div>
 
-            <div id="signupForm" class="auth-form">
-                <form onsubmit="handleAuthSubmit(event, 'Sign Up')">
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="signupName" placeholder="Enter your full name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Register As</label>
-                        <select id="signupRole">
-                            <option>New Student Applicant</option>
-                            <option>Parent Account</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" id="signupEmail" placeholder="name@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Create Password</label>
-                        <input type="password" placeholder="••••••••" required>
-                    </div>
-                    <button type="submit" class="submit-btn">Create Account</button>
-                </form>
-            </div>
+            <!-- SOCIAL LOGIN BUTTONS -->
+            <button type="button" class="btn-social" onclick="handleGoogleSignIn()">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                Continue with Google
+            </button>
+            <button type="button" class="btn-social" onclick="handleGithubSignIn()">
+                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub">
+                Continue with GitHub
+            </button>
+
+            <div class="social-divider"><span>OR WITH EMAIL</span></div>
+
+            <!-- USER LOGIN FORM -->
+            <form id="userLoginForm" onsubmit="handleUserLogin(event)">
+                <div class="form-group-modal">
+                    <label>Email Address</label>
+                    <input type="email" id="userLoginEmail" placeholder="name@domain.com" required>
+                </div>
+                <div class="form-group-modal" style="margin-bottom: 16px;">
+                    <label>Password</label>
+                    <input type="password" id="userLoginPass" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-yellow" style="width: 100%; border-radius: 8px; padding: 12px;">Sign In</button>
+            </form>
+
+            <!-- USER SIGNUP FORM -->
+            <form id="userSignupForm" onsubmit="handleUserSignup(event)" style="display: none;">
+                <div class="form-group-modal">
+                    <label>Full Name</label>
+                    <input type="text" id="userSignupName" placeholder="John Doe" required>
+                </div>
+                <div class="form-group-modal">
+                    <label>Email Address</label>
+                    <input type="email" id="userSignupEmail" placeholder="name@domain.com" required>
+                </div>
+                <div class="form-group-modal">
+                    <label>Role</label>
+                    <select id="userSignupRole">
+                        <option value="Student">Student</option>
+                        <option value="Parent">Parent</option>
+                    </select>
+                </div>
+                <div class="form-group-modal" style="margin-bottom: 16px;">
+                    <label>Create Password</label>
+                    <input type="password" id="userSignupPass" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-yellow" style="width: 100%; border-radius: 8px; padding: 12px;">Register Account</button>
+            </form>
+
+            <div id="userAuthMsg" style="margin-top: 12px; font-size: 0.85rem; text-align: center; display: none; font-weight: 600;"></div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, onValue, get, push, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
-          apiKey: "AIzaSyAY9bYNtXvMKcPmVmpa8zGQ0dPYvCXE2_o",
-          authDomain: "wavechat-4b8fa.firebaseapp.com",
-          databaseURL: "https://wavechat-4b8fa-default-rtdb.firebaseio.com",
-          projectId: "wavechat-4b8fa",
-          storageBucket: "wavechat-4b8fa.firebasestorage.app",
-          messagingSenderId: "350559438665",
-          appId: "1:350559438665:web:1c2d068cb5b08a27d63c98",
-          measurementId: "G-26Q3VJGC07"
+            apiKey: "AIzaSyDQFYdl9SRgylZEdLNIUbAg4LtB7E6_Uo4",
+            authDomain: "school-88506.firebaseapp.com",
+            databaseURL: "https://school-88506-default-rtdb.firebaseio.com",
+            projectId: "school-88506",
+            storageBucket: "school-88506.firebasestorage.app",
+            messagingSenderId: "220132241066",
+            appId: "1:220132241066:web:8862c6f824fdc933d4ead3"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const auth = getAuth(app);
 
-        document.getElementById('mobile-menu').addEventListener('click', () => {
-            document.getElementById('nav-list').classList.toggle('show');
-        });
+        const googleProvider = new GoogleAuthProvider();
+        const githubProvider = new GithubAuthProvider();
 
-        window.openModal = function(mode) {
-            document.getElementById('authModal').classList.add('active');
-            if(mode === 'login') switchAuthTab('login', null);
-        }
+        // USER AUTH MODAL CONTROLS
+        window.openUserAuthModal = () => {
+            document.getElementById('userAuthModal').style.display = 'flex';
+        };
+        window.closeUserAuthModal = () => {
+            document.getElementById('userAuthModal').style.display = 'none';
+        };
 
-        window.closeModal = function() {
-            document.getElementById('authModal').classList.remove('active');
-        }
+        window.switchUserAuthTab = (tab) => {
+            const isLogin = tab === 'login';
+            document.getElementById('userLoginForm').style.display = isLogin ? 'block' : 'none';
+            document.getElementById('userSignupForm').style.display = isLogin ? 'none' : 'block';
+            document.getElementById('userTabLoginBtn').classList.toggle('active', isLogin);
+            document.getElementById('userTabSignupBtn').classList.toggle('active', !isLogin);
+            document.getElementById('userAuthMsg').style.display = 'none';
+        };
 
-        window.switchAuthTab = function(type, event) {
-            const loginForm = document.getElementById('loginForm');
-            const signupForm = document.getElementById('signupForm');
-            const tabs = document.querySelectorAll('.auth-tab');
-            tabs.forEach(t => t.classList.remove('active'));
-
-            if (type === 'login') {
-                loginForm.classList.add('active');
-                signupForm.classList.remove('active');
-                if(event) event.currentTarget.classList.add('active');
-                else tabs[0].classList.add('active');
-            } else {
-                signupForm.classList.add('active');
-                loginForm.classList.remove('active');
-                if(event) event.currentTarget.classList.add('active');
-                else tabs[1].classList.add('active');
-            }
-        }
-
-        window.handleAuthSubmit = async function(event, actionType) {
-            event.preventDefault();
-            let userName = "";
-            let email = "";
-            let role = "";
-
-            if (actionType === 'Sign Up') {
-                userName = document.getElementById('signupName').value;
-                email = document.getElementById('signupEmail').value;
-                role = document.getElementById('signupRole').value;
-            } else {
-                email = document.getElementById('loginIdentifier').value;
-                userName = email.includes('@') ? email.split('@')[0] : email;
-                role = document.getElementById('loginRole').value;
-            }
-
-            userName = userName.charAt(0).toUpperCase() + userName.slice(1);
-            const safeKey = email.replace(/[@.]/g, "_");
-
+        // GOOGLE SIGN-IN HANDLER
+        window.handleGoogleSignIn = async () => {
+            const msg = document.getElementById('userAuthMsg');
             try {
-                await set(ref(db, 'users/' + safeKey), {
-                    name: userName,
-                    email: email,
-                    role: role,
-                    lastLogin: new Date().toISOString()
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+
+                // Sync to Realtime DB
+                const userRef = push(ref(db, 'registered_users'));
+                await set(userRef, {
+                    name: user.displayName || 'Google User',
+                    email: user.email,
+                    role: 'Student',
+                    provider: 'Google'
                 });
 
-                const authNavItem = document.getElementById('authNavItem');
-                authNavItem.innerHTML = `<div class="user-profile-badge" onclick="handleLogout()" title="Click to Logout">👤 ${userName} ⏷</div>`;
-
-                alert(`Welcome to Shyn Public School, ${userName}! Authenticated successfully.`);
-                closeModal();
+                msg.style.color = '#10b981';
+                msg.innerText = `Signed in as ${user.displayName || user.email}!`;
+                msg.style.display = 'block';
+                setTimeout(() => closeUserAuthModal(), 1500);
             } catch (error) {
-                console.error("Firebase Error:", error);
-                alert("Database authentication failed.");
+                msg.style.color = '#ef4444';
+                msg.innerText = error.message || "Google Sign-In failed!";
+                msg.style.display = 'block';
             }
-        }
+        };
 
-        window.handleLogout = function() {
-            if(confirm("Do you want to log out of Shyn Public School portal?")) {
-                const authNavItem = document.getElementById('authNavItem');
-                authNavItem.innerHTML = `<a href="#" class="auth-nav-btn" onclick="openModal('login')">Login / Sign Up</a>`;
+        // GITHUB SIGN-IN HANDLER
+        window.handleGithubSignIn = async () => {
+            const msg = document.getElementById('userAuthMsg');
+            try {
+                const result = await signInWithPopup(auth, githubProvider);
+                const user = result.user;
+
+                // Sync to Realtime DB
+                const userRef = push(ref(db, 'registered_users'));
+                await set(userRef, {
+                    name: user.displayName || user.reloadUserInfo.screenName || 'GitHub User',
+                    email: user.email || 'GitHub Account',
+                    role: 'Student',
+                    provider: 'GitHub'
+                });
+
+                msg.style.color = '#10b981';
+                msg.innerText = `Signed in as ${user.displayName || 'GitHub User'}!`;
+                msg.style.display = 'block';
+                setTimeout(() => closeUserAuthModal(), 1500);
+            } catch (error) {
+                msg.style.color = '#ef4444';
+                msg.innerText = error.message || "GitHub Sign-In failed!";
+                msg.style.display = 'block';
             }
-        }
+        };
+
+        // USER LOGIN HANDLER
+        window.handleUserLogin = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('userLoginEmail').value.trim().toLowerCase();
+            const pass = document.getElementById('userLoginPass').value.trim();
+            const msg = document.getElementById('userAuthMsg');
+
+            const snap = await get(ref(db, 'registered_users'));
+            if (snap.exists()) {
+                const users = snap.val();
+                const foundUser = Object.values(users).find(u => u.email && u.email.toLowerCase() === email && u.pass === pass);
+                
+                if (foundUser) {
+                    msg.style.color = '#10b981';
+                    msg.innerText = `Welcome back, ${foundUser.name}! (${foundUser.role})`;
+                    msg.style.display = 'block';
+                    setTimeout(() => closeUserAuthModal(), 1500);
+                    return;
+                }
+            }
+            msg.style.color = '#ef4444';
+            msg.innerText = "Invalid Email or Password!";
+            msg.style.display = 'block';
+        };
+
+        // USER SIGNUP HANDLER
+        window.handleUserSignup = async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('userSignupName').value.trim();
+            const email = document.getElementById('userSignupEmail').value.trim();
+            const role = document.getElementById('userSignupRole').value;
+            const pass = document.getElementById('userSignupPass').value.trim();
+            const msg = document.getElementById('userAuthMsg');
+
+            const newRef = push(ref(db, 'registered_users'));
+            await set(newRef, { name, email, role, pass, provider: 'Email' });
+
+            msg.style.color = '#10b981';
+            msg.innerText = "Account created successfully! You can now log in.";
+            msg.style.display = 'block';
+            setTimeout(() => switchUserAuthTab('login'), 1500);
+        };
+
+        // Fetch Live Content
+        onValue(ref(db, 'site_content'), (snapshot) => {
+            if (snapshot.exists()) {
+                const c = snapshot.val();
+                if(c.heroTitle) document.getElementById('dynHeroTitle').innerHTML = c.heroTitle;
+                if(c.heroDesc) document.getElementById('dynHeroDesc').innerText = c.heroDesc;
+                if(c.heroImg) document.getElementById('dynHeroImg').src = c.heroImg;
+                if(c.schoolHistory) document.getElementById('dynSchoolHistory').innerText = c.schoolHistory;
+                if(c.visionMission) document.getElementById('dynVisionMission').innerText = c.visionMission;
+                if(c.principalName) document.getElementById('dynPrincipalName').innerText = c.principalName;
+                if(c.principalMsg) document.getElementById('dynPrincipalMsg').innerText = c.principalMsg;
+                if(c.principalImg) document.getElementById('dynPrincipalImg').src = c.principalImg;
+                if(c.statStudents) document.getElementById('statStudents').innerText = c.statStudents;
+                if(c.statFaculty) document.getElementById('statFaculty').innerText = c.statFaculty;
+                if(c.statPass) document.getElementById('statPass').innerText = c.statPass;
+                if(c.statRatio) document.getElementById('statRatio').innerText = c.statRatio;
+            }
+        });
+
+        // Gallery Sync
+        onValue(ref(db, 'gallery'), (snapshot) => {
+            const div = document.getElementById('galleryContainer');
+            div.innerHTML = '';
+            if (snapshot.exists()) {
+                Object.values(snapshot.val()).forEach(g => {
+                    div.innerHTML += `<img class="gallery-img" src="${g.url}" alt="Gallery Photo">`;
+                });
+            }
+        });
+
+        // Notices Sync
+        onValue(ref(db, 'notices'), (snapshot) => {
+            const ul = document.getElementById('noticeListContainer');
+            ul.innerHTML = '';
+            if (snapshot.exists()) {
+                Object.values(snapshot.val()).forEach(n => {
+                    ul.innerHTML += `<li class="notice-item"><span>📌 ${n.title}</span> <span class="notice-badge">${n.date}</span></li>`;
+                });
+            }
+        });
+
+        // Events Sync
+        onValue(ref(db, 'events'), (snapshot) => {
+            const ul = document.getElementById('eventListContainer');
+            ul.innerHTML = '';
+            if (snapshot.exists()) {
+                Object.values(snapshot.val()).forEach(ev => {
+                    ul.innerHTML += `<li class="notice-item"><span>🎉 ${ev.title}</span> <span class="notice-badge" style="background:#e0f2fe; color:#0369a1;">${ev.date}</span></li>`;
+                });
+            }
+        });
+
+        // Fee Schedule Sync
+        onValue(ref(db, 'fee_categories'), (snapshot) => {
+            const tbody = document.getElementById('publicFeeTable');
+            tbody.innerHTML = '';
+            if (snapshot.exists()) {
+                Object.values(snapshot.val()).forEach(item => {
+                    tbody.innerHTML += `<tr><td><strong>${item.class}</strong></td><td>${item.category}</td><td>${item.cycle}</td><td>₹ ${item.amount}</td></tr>`;
+                });
+            }
+        });
+
+        // Location Sync
+        onValue(ref(db, 'school_info'), (snapshot) => {
+            if (snapshot.exists()) {
+                const info = snapshot.val();
+                if(info.addressTitle) document.getElementById('locAddressTitle').innerText = info.addressTitle;
+                if(info.addressText) document.getElementById('locAddressText').innerText = info.addressText;
+                if(info.phone) document.getElementById('locPhone').innerText = info.phone;
+                if(info.email) document.getElementById('locEmail').innerText = info.email;
+                if(info.mapEmbedUrl) document.getElementById('locMapFrame').src = info.mapEmbedUrl;
+            }
+        });
     </script>
 </body>
 </html>
