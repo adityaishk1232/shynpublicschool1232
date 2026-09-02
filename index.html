@@ -47,6 +47,21 @@
         }
         .btn-outline:hover { background: var(--primary-yellow); color: #fff; }
 
+        /* USER PROFILE STYLES IN HEADER */
+        .user-profile-badge {
+            display: flex; align-items: center; gap: 10px; background: #f8fafc;
+            border: 1px solid var(--card-border); padding: 4px 12px 4px 6px; border-radius: 30px;
+        }
+        .user-avatar {
+            width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
+            border: 2px solid var(--primary-yellow); background: #e2e8f0;
+        }
+        .user-name { font-weight: 700; font-size: 0.85rem; color: var(--text-dark); }
+        .btn-logout {
+            background: transparent; border: none; color: var(--danger);
+            font-size: 0.78rem; font-weight: 700; cursor: pointer; margin-left: 6px;
+        }
+
         .hero {
             max-width: 1200px; margin: 30px auto; padding: 0 20px;
             display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center;
@@ -135,7 +150,11 @@
                     <li><a href="#noticeboard">Notices</a></li>
                     <li><a href="#gallery">Gallery</a></li>
                     <li><a href="#contact">Contact</a></li>
-                    <li><button onclick="openUserAuthModal()" class="btn-outline">🔑 Student / Parent Login</button></li>
+                    
+                    <!-- DYNAMIC LOGIN / USER PROFILE BUTTON -->
+                    <li id="authNavContainer">
+                        <button onclick="openUserAuthModal()" class="btn-outline">🔑 Student / Parent Login</button>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -274,6 +293,10 @@
                     <input type="text" id="userSignupName" placeholder="John Doe" required>
                 </div>
                 <div class="form-group-modal">
+                    <label>Profile Picture URL (Optional)</label>
+                    <input type="url" id="userSignupPhoto" placeholder="https://example.com/photo.jpg">
+                </div>
+                <div class="form-group-modal">
                     <label>Email Address</label>
                     <input type="email" id="userSignupEmail" placeholder="name@domain.com" required>
                 </div>
@@ -317,6 +340,31 @@
         const googleProvider = new GoogleAuthProvider();
         const githubProvider = new GithubAuthProvider();
 
+        const DEFAULT_AVATAR = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
+
+        // CHECK USER SESSION ON PAGE LOAD
+        function checkUserSession() {
+            const activeUser = JSON.parse(sessionStorage.getItem('shyn_logged_user'));
+            const navContainer = document.getElementById('authNavContainer');
+
+            if (activeUser) {
+                navContainer.innerHTML = `
+                    <div class="user-profile-badge">
+                        <img src="${activeUser.photoUrl || DEFAULT_AVATAR}" class="user-avatar" alt="User Profile">
+                        <span class="user-name">${activeUser.name}</span>
+                        <button onclick="handleUserLogout()" class="btn-logout">Logout</button>
+                    </div>
+                `;
+            } else {
+                navContainer.innerHTML = `<button onclick="openUserAuthModal()" class="btn-outline">🔑 Student / Parent Login</button>`;
+            }
+        }
+
+        window.handleUserLogout = () => {
+            sessionStorage.removeItem('shyn_logged_user');
+            checkUserSession();
+        };
+
         // USER AUTH MODAL CONTROLS
         window.openUserAuthModal = () => {
             document.getElementById('userAuthModal').style.display = 'flex';
@@ -341,19 +389,29 @@
                 const result = await signInWithPopup(auth, googleProvider);
                 const user = result.user;
 
-                // Sync to Realtime DB
-                const userRef = push(ref(db, 'registered_users'));
-                await set(userRef, {
+                const userData = {
                     name: user.displayName || 'Google User',
                     email: user.email,
+                    photoUrl: user.photoURL || DEFAULT_AVATAR,
                     role: 'Student',
                     provider: 'Google'
-                });
+                };
+
+                // Save to Realtime DB
+                const userRef = push(ref(db, 'registered_users'));
+                await set(userRef, userData);
+
+                // Save to Session
+                sessionStorage.setItem('shyn_logged_user', JSON.stringify(userData));
 
                 msg.style.color = '#10b981';
-                msg.innerText = `Signed in as ${user.displayName || user.email}!`;
+                msg.innerText = `Signed in as ${userData.name}!`;
                 msg.style.display = 'block';
-                setTimeout(() => closeUserAuthModal(), 1500);
+                
+                setTimeout(() => {
+                    closeUserAuthModal();
+                    checkUserSession();
+                }, 1200);
             } catch (error) {
                 msg.style.color = '#ef4444';
                 msg.innerText = error.message || "Google Sign-In failed!";
@@ -368,19 +426,29 @@
                 const result = await signInWithPopup(auth, githubProvider);
                 const user = result.user;
 
-                // Sync to Realtime DB
-                const userRef = push(ref(db, 'registered_users'));
-                await set(userRef, {
+                const userData = {
                     name: user.displayName || user.reloadUserInfo.screenName || 'GitHub User',
                     email: user.email || 'GitHub Account',
+                    photoUrl: user.photoURL || DEFAULT_AVATAR,
                     role: 'Student',
                     provider: 'GitHub'
-                });
+                };
+
+                // Save to Realtime DB
+                const userRef = push(ref(db, 'registered_users'));
+                await set(userRef, userData);
+
+                // Save to Session
+                sessionStorage.setItem('shyn_logged_user', JSON.stringify(userData));
 
                 msg.style.color = '#10b981';
-                msg.innerText = `Signed in as ${user.displayName || 'GitHub User'}!`;
+                msg.innerText = `Signed in as ${userData.name}!`;
                 msg.style.display = 'block';
-                setTimeout(() => closeUserAuthModal(), 1500);
+                
+                setTimeout(() => {
+                    closeUserAuthModal();
+                    checkUserSession();
+                }, 1200);
             } catch (error) {
                 msg.style.color = '#ef4444';
                 msg.innerText = error.message || "GitHub Sign-In failed!";
@@ -401,10 +469,15 @@
                 const foundUser = Object.values(users).find(u => u.email && u.email.toLowerCase() === email && u.pass === pass);
                 
                 if (foundUser) {
+                    sessionStorage.setItem('shyn_logged_user', JSON.stringify(foundUser));
                     msg.style.color = '#10b981';
-                    msg.innerText = `Welcome back, ${foundUser.name}! (${foundUser.role})`;
+                    msg.innerText = `Welcome back, ${foundUser.name}!`;
                     msg.style.display = 'block';
-                    setTimeout(() => closeUserAuthModal(), 1500);
+                    
+                    setTimeout(() => {
+                        closeUserAuthModal();
+                        checkUserSession();
+                    }, 1200);
                     return;
                 }
             }
@@ -417,19 +490,23 @@
         window.handleUserSignup = async (e) => {
             e.preventDefault();
             const name = document.getElementById('userSignupName').value.trim();
+            const photoUrl = document.getElementById('userSignupPhoto').value.trim() || DEFAULT_AVATAR;
             const email = document.getElementById('userSignupEmail').value.trim();
             const role = document.getElementById('userSignupRole').value;
             const pass = document.getElementById('userSignupPass').value.trim();
             const msg = document.getElementById('userAuthMsg');
 
             const newRef = push(ref(db, 'registered_users'));
-            await set(newRef, { name, email, role, pass, provider: 'Email' });
+            await set(newRef, { name, photoUrl, email, role, pass, provider: 'Email' });
 
             msg.style.color = '#10b981';
             msg.innerText = "Account created successfully! You can now log in.";
             msg.style.display = 'block';
             setTimeout(() => switchUserAuthTab('login'), 1500);
         };
+
+        // Initialize session on page load
+        checkUserSession();
 
         // Fetch Live Content
         onValue(ref(db, 'site_content'), (snapshot) => {
