@@ -80,7 +80,6 @@
 
         .section-container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
         .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
-        .section-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
         .card { background: #fff; border: 1px solid var(--card-border); border-radius: 20px; padding: 28px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -89,7 +88,7 @@
         .principal-img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-yellow); background: #f1f5f9; }
 
         .notice-list { list-style: none; }
-        .notice-item { padding: 12px 0; border-bottom: 1px dashed var(--card-border); display: flex; justify-content: space-between; align-items: center; }
+        .notice-item { padding: 12px 0; border-bottom: 1px dashed var(--card-border); display: flex; justify-between: center; align-items: center; }
         .notice-badge { background: #fef3c7; color: #92400e; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 12px; }
 
         .table { width: 100%; border-collapse: collapse; margin-top: 10px; }
@@ -105,8 +104,9 @@
             background: rgba(15, 23, 42, 0.75); z-index: 10000; justify-content: center; align-items: center; padding: 20px;
         }
         .user-auth-card {
-            background: #ffffff; width: 100%; max-width: 420px; padding: 32px;
+            background: #ffffff; width: 100%; max-width: 440px; padding: 32px;
             border-radius: 20px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); position: relative;
+            max-height: 90vh; overflow-y: auto;
         }
         .user-auth-toggle { display: flex; gap: 10px; margin-bottom: 20px; background: #f1f5f9; padding: 4px; border-radius: 10px; }
         .user-auth-toggle button {
@@ -139,12 +139,19 @@
 
         /* PROFILE EDIT AVATAR PREVIEW */
         .profile-preview-container {
-            text-align: center; margin-bottom: 16px;
+            text-align: center; margin-bottom: 16px; position: relative;
         }
         .profile-preview-img {
-            width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
-            border: 3px solid var(--primary-yellow); margin-bottom: 8px;
+            width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
+            border: 3px solid var(--primary-yellow); margin-bottom: 8px; background: #f1f5f9;
         }
+        .file-upload-btn {
+            display: inline-block; background: #f1f5f9; border: 1px solid var(--card-border);
+            padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+            color: var(--text-dark); cursor: pointer; transition: 0.2s; margin-top: 4px;
+        }
+        .file-upload-btn:hover { background: #e2e8f0; }
+        .hidden-file-input { display: none; }
     </style>
 </head>
 <body>
@@ -161,8 +168,6 @@
                     <li><a href="#noticeboard">Notices</a></li>
                     <li><a href="#gallery">Gallery</a></li>
                     <li><a href="#contact">Contact</a></li>
-                    
-                    <!-- DYNAMIC LOGIN / USER PROFILE BUTTON -->
                     <li id="authNavContainer">
                         <button onclick="openUserAuthModal()" class="btn-outline">🔑 Student / Parent Login</button>
                     </li>
@@ -272,7 +277,6 @@
                 <button id="userTabSignupBtn" onclick="switchUserAuthTab('signup')">Sign Up</button>
             </div>
 
-            <!-- SOCIAL LOGIN BUTTONS -->
             <button type="button" class="btn-social" onclick="handleGoogleSignIn()">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
                 Continue with Google
@@ -303,10 +307,14 @@
                     <label>Full Name</label>
                     <input type="text" id="userSignupName" placeholder="John Doe" required>
                 </div>
+
+                <!-- SIGNUP LOCAL FILE OR URL UPLOAD -->
                 <div class="form-group-modal">
-                    <label>Profile Picture URL (Optional)</label>
-                    <input type="url" id="userSignupPhoto" placeholder="https://example.com/photo.jpg">
+                    <label>Profile Picture</label>
+                    <input type="file" id="signupLocalPhoto" accept="image/*" onchange="handleSignupFileSelect(this)" style="margin-bottom: 6px;">
+                    <input type="url" id="userSignupPhoto" placeholder="Or paste image URL (https://...)" oninput="handleSignupUrlInput(this.value)">
                 </div>
+
                 <div class="form-group-modal">
                     <label>Email Address</label>
                     <input type="email" id="userSignupEmail" placeholder="name@domain.com" required>
@@ -329,7 +337,7 @@
         </div>
     </div>
 
-    <!-- PROFILE EDIT MODAL -->
+    <!-- PROFILE EDIT MODAL WITH LOCAL FILE UPLOAD -->
     <div id="editProfileModal" class="modal-overlay">
         <div class="user-auth-card">
             <button onclick="closeEditProfileModal()" style="position: absolute; top: 16px; right: 16px; border: none; background: transparent; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
@@ -337,7 +345,9 @@
             <h3 style="margin-bottom: 16px; text-align: center;">⚙️ Account Settings</h3>
 
             <div class="profile-preview-container">
-                <img id="editPhotoPreview" class="profile-preview-img" alt="Profile Preview">
+                <img id="editPhotoPreview" class="profile-preview-img" alt="Profile Preview"><br>
+                <label for="editLocalPhotoInput" class="file-upload-btn">📁 Upload Local Image</label>
+                <input type="file" id="editLocalPhotoInput" class="hidden-file-input" accept="image/*" onchange="handleProfileFileSelect(this)">
             </div>
 
             <form onsubmit="handleProfileUpdate(event)">
@@ -388,7 +398,7 @@
 
         const DEFAULT_AVATAR = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
 
-        // CHECK USER SESSION ON PAGE LOAD
+        // CHECK USER SESSION
         function checkUserSession() {
             const activeUser = JSON.parse(sessionStorage.getItem('shyn_logged_user'));
             const navContainer = document.getElementById('authNavContainer');
@@ -451,6 +461,34 @@
             document.getElementById('editPhotoPreview').src = url || DEFAULT_AVATAR;
         };
 
+        // FILE READER FOR LOCAL EDIT PROFILE PHOTO
+        window.handleProfileFileSelect = (input) => {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Data = e.target.result;
+                    document.getElementById('editPhotoPreview').src = base64Data;
+                    document.getElementById('editProfilePhoto').value = base64Data;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+        // FILE READER FOR LOCAL SIGNUP PHOTO
+        window.handleSignupFileSelect = (input) => {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('userSignupPhoto').value = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+        window.handleSignupUrlInput = (url) => {
+            if(url) document.getElementById('signupLocalPhoto').value = '';
+        };
+
         // HANDLE PROFILE UPDATE
         window.handleProfileUpdate = async (e) => {
             e.preventDefault();
@@ -463,7 +501,6 @@
             const newPassword = document.getElementById('editProfilePass').value.trim();
 
             try {
-                // Find and update in Realtime DB
                 const snap = await get(ref(db, 'registered_users'));
                 if (snap.exists()) {
                     const users = snap.val();
@@ -485,7 +522,7 @@
                     }
                 }
 
-                // Update session
+                // Update Session
                 activeUser.name = updatedName;
                 activeUser.photoUrl = updatedPhoto;
                 if (newPassword) activeUser.pass = newPassword;
@@ -521,7 +558,6 @@
                     provider: 'Google'
                 };
 
-                // Save to Realtime DB
                 const userRef = push(ref(db, 'registered_users'));
                 await set(userRef, userData);
 
@@ -558,7 +594,6 @@
                     provider: 'GitHub'
                 };
 
-                // Save to Realtime DB
                 const userRef = push(ref(db, 'registered_users'));
                 await set(userRef, userData);
 
