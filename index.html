@@ -51,7 +51,9 @@
         .user-profile-badge {
             display: flex; align-items: center; gap: 10px; background: #f8fafc;
             border: 1px solid var(--card-border); padding: 4px 12px 4px 6px; border-radius: 30px;
+            cursor: pointer; transition: 0.2s;
         }
+        .user-profile-badge:hover { background: #f1f5f9; border-color: var(--primary-yellow); }
         .user-avatar {
             width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
             border: 2px solid var(--primary-yellow); background: #e2e8f0;
@@ -97,8 +99,8 @@
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
         .gallery-img { width: 100%; height: 180px; object-fit: cover; border-radius: 14px; background: #f1f5f9; }
 
-        /* USER AUTH MODAL STYLES */
-        #userAuthModal {
+        /* USER AUTH & EDIT MODAL STYLES */
+        .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.75); z-index: 10000; justify-content: center; align-items: center; padding: 20px;
         }
@@ -134,6 +136,15 @@
         }
         .btn-social:hover { background: #f8fafc; border-color: #cbd5e1; }
         .btn-social img { width: 18px; height: 18px; }
+
+        /* PROFILE EDIT AVATAR PREVIEW */
+        .profile-preview-container {
+            text-align: center; margin-bottom: 16px;
+        }
+        .profile-preview-img {
+            width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
+            border: 3px solid var(--primary-yellow); margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
@@ -251,8 +262,8 @@
         </div>
     </div>
 
-    <!-- USER LOGIN & SIGNUP MODAL WITH GOOGLE & GITHUB -->
-    <div id="userAuthModal">
+    <!-- USER LOGIN & SIGNUP MODAL -->
+    <div id="userAuthModal" class="modal-overlay">
         <div class="user-auth-card">
             <button onclick="closeUserAuthModal()" style="position: absolute; top: 16px; right: 16px; border: none; background: transparent; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
 
@@ -318,9 +329,44 @@
         </div>
     </div>
 
+    <!-- PROFILE EDIT MODAL -->
+    <div id="editProfileModal" class="modal-overlay">
+        <div class="user-auth-card">
+            <button onclick="closeEditProfileModal()" style="position: absolute; top: 16px; right: 16px; border: none; background: transparent; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
+
+            <h3 style="margin-bottom: 16px; text-align: center;">⚙️ Account Settings</h3>
+
+            <div class="profile-preview-container">
+                <img id="editPhotoPreview" class="profile-preview-img" alt="Profile Preview">
+            </div>
+
+            <form onsubmit="handleProfileUpdate(event)">
+                <div class="form-group-modal">
+                    <label>Full Name</label>
+                    <input type="text" id="editProfileName" required>
+                </div>
+                <div class="form-group-modal">
+                    <label>Profile Picture URL</label>
+                    <input type="url" id="editProfilePhoto" oninput="updatePhotoPreview(this.value)" placeholder="https://example.com/photo.jpg">
+                </div>
+                <div class="form-group-modal">
+                    <label>Email Address (Read-only)</label>
+                    <input type="email" id="editProfileEmail" disabled style="background: #f1f5f9; color: #64748b;">
+                </div>
+                <div class="form-group-modal" style="margin-bottom: 16px;">
+                    <label>New Password (Leave blank to keep current)</label>
+                    <input type="password" id="editProfilePass" placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-yellow" style="width: 100%; border-radius: 8px; padding: 12px;">Save Changes</button>
+            </form>
+
+            <div id="editProfileMsg" style="margin-top: 12px; font-size: 0.85rem; text-align: center; display: none; font-weight: 600;"></div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue, get, push, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, onValue, get, push, set, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -349,10 +395,10 @@
 
             if (activeUser) {
                 navContainer.innerHTML = `
-                    <div class="user-profile-badge">
+                    <div class="user-profile-badge" onclick="openEditProfileModal()" title="Click to Edit Profile">
                         <img src="${activeUser.photoUrl || DEFAULT_AVATAR}" class="user-avatar" alt="User Profile">
                         <span class="user-name">${activeUser.name}</span>
-                        <button onclick="handleUserLogout()" class="btn-logout">Logout</button>
+                        <button onclick="event.stopPropagation(); handleUserLogout()" class="btn-logout">Logout</button>
                     </div>
                 `;
             } else {
@@ -382,6 +428,84 @@
             document.getElementById('userAuthMsg').style.display = 'none';
         };
 
+        // EDIT PROFILE MODAL CONTROLS
+        window.openEditProfileModal = () => {
+            const activeUser = JSON.parse(sessionStorage.getItem('shyn_logged_user'));
+            if (!activeUser) return;
+
+            document.getElementById('editProfileName').value = activeUser.name || '';
+            document.getElementById('editProfilePhoto').value = activeUser.photoUrl || '';
+            document.getElementById('editProfileEmail').value = activeUser.email || '';
+            document.getElementById('editPhotoPreview').src = activeUser.photoUrl || DEFAULT_AVATAR;
+            document.getElementById('editProfilePass').value = '';
+            document.getElementById('editProfileMsg').style.display = 'none';
+
+            document.getElementById('editProfileModal').style.display = 'flex';
+        };
+
+        window.closeEditProfileModal = () => {
+            document.getElementById('editProfileModal').style.display = 'none';
+        };
+
+        window.updatePhotoPreview = (url) => {
+            document.getElementById('editPhotoPreview').src = url || DEFAULT_AVATAR;
+        };
+
+        // HANDLE PROFILE UPDATE
+        window.handleProfileUpdate = async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('editProfileMsg');
+            const activeUser = JSON.parse(sessionStorage.getItem('shyn_logged_user'));
+            if (!activeUser) return;
+
+            const updatedName = document.getElementById('editProfileName').value.trim();
+            const updatedPhoto = document.getElementById('editProfilePhoto').value.trim() || DEFAULT_AVATAR;
+            const newPassword = document.getElementById('editProfilePass').value.trim();
+
+            try {
+                // Find and update in Realtime DB
+                const snap = await get(ref(db, 'registered_users'));
+                if (snap.exists()) {
+                    const users = snap.val();
+                    let targetKey = activeUser.key;
+
+                    if (!targetKey) {
+                        targetKey = Object.keys(users).find(key => users[key].email && users[key].email.toLowerCase() === activeUser.email.toLowerCase());
+                    }
+
+                    const updateData = {
+                        name: updatedName,
+                        photoUrl: updatedPhoto
+                    };
+
+                    if (newPassword) updateData.pass = newPassword;
+
+                    if (targetKey) {
+                        await update(ref(db, `registered_users/${targetKey}`), updateData);
+                    }
+                }
+
+                // Update session
+                activeUser.name = updatedName;
+                activeUser.photoUrl = updatedPhoto;
+                if (newPassword) activeUser.pass = newPassword;
+                sessionStorage.setItem('shyn_logged_user', JSON.stringify(activeUser));
+
+                msg.style.color = '#10b981';
+                msg.innerText = "Profile updated successfully!";
+                msg.style.display = 'block';
+
+                setTimeout(() => {
+                    closeEditProfileModal();
+                    checkUserSession();
+                }, 1200);
+            } catch (error) {
+                msg.style.color = '#ef4444';
+                msg.innerText = "Failed to update profile. Try again!";
+                msg.style.display = 'block';
+            }
+        };
+
         // GOOGLE SIGN-IN HANDLER
         window.handleGoogleSignIn = async () => {
             const msg = document.getElementById('userAuthMsg');
@@ -401,7 +525,7 @@
                 const userRef = push(ref(db, 'registered_users'));
                 await set(userRef, userData);
 
-                // Save to Session
+                userData.key = userRef.key;
                 sessionStorage.setItem('shyn_logged_user', JSON.stringify(userData));
 
                 msg.style.color = '#10b981';
@@ -438,7 +562,7 @@
                 const userRef = push(ref(db, 'registered_users'));
                 await set(userRef, userData);
 
-                // Save to Session
+                userData.key = userRef.key;
                 sessionStorage.setItem('shyn_logged_user', JSON.stringify(userData));
 
                 msg.style.color = '#10b981';
@@ -466,9 +590,11 @@
             const snap = await get(ref(db, 'registered_users'));
             if (snap.exists()) {
                 const users = snap.val();
-                const foundUser = Object.values(users).find(u => u.email && u.email.toLowerCase() === email && u.pass === pass);
+                const key = Object.keys(users).find(k => users[k].email && users[k].email.toLowerCase() === email && users[k].pass === pass);
                 
-                if (foundUser) {
+                if (key) {
+                    const foundUser = users[key];
+                    foundUser.key = key;
                     sessionStorage.setItem('shyn_logged_user', JSON.stringify(foundUser));
                     msg.style.color = '#10b981';
                     msg.innerText = `Welcome back, ${foundUser.name}!`;
